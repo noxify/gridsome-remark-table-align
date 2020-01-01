@@ -1,5 +1,7 @@
 # gridsome-remark-table-align
-Gridsome Remark plugin to transform the deprecated align attribute to a style attribute
+Gridsome Remark plugin move the `table` align defintion to the `tableCell` definition.
+
+With this changes, you can use [@noxify/gridsome-remark-classes](https://github.com/noxify/gridsome-remark-classes) to add your own classes.
 
 
 # Installation
@@ -61,13 +63,9 @@ module.exports = {
 }
 ```
 
-# Usage
-
-The transformer uses (mapbox/hast-util-table-cell-style)[https://github.com/mapbox/hast-util-table-cell-style] to convert the deprecated `align` attribute to the supported `style` attribute.
-
 # Example
 
-## Markdown
+## Example table
 
 ```md
 | Tables   |      Are      |  Cool |
@@ -77,40 +75,50 @@ The transformer uses (mapbox/hast-util-table-cell-style)[https://github.com/mapb
 | col 3 is | right-aligned |    $1 |
 ```
 
-## Old HTML
+## gridsome.config.js
+
+```js
+transformers : {
+  remark : {
+    plugins : [
+      '@noxify/gridsome-remark-table-align',
+      ['@noxify/gridsome-remark-classes', {
+        'table' : 'table',
+        'tableCell[align=center]' : 'text-center',
+        'tableCell[align=right]': 'text-right',
+      }]
+    ]
+  }
+},
+```
+
+## Rendered table
 
 ```html
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Tables</th>
-      <th align="center">Are</th>
-      <th align="right">Cool</th>
+      <th class="text-center">Are</th>
+      <th class="text-right">Cool</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>col 1 is</td>
-      <td align="center">left-aligned</td>
-      <td align="right">$1600</td>
+      <td class="text-center">left-aligned</td>
+      <td class="text-right">$1600</td>
     </tr>
     <tr>
       <td>col 2 is</td>
-      <td align="center">centered</td>
-      <td align="right">$12</td>
+      <td class="text-center">centered</td>
+      <td class="text-right">$12</td>
     </tr>
     <tr>
       <td>col 3 is</td>
-      <td align="center">right-aligned</td>
-      <td align="right">$1</td>
+      <td class="text-center">right-aligned</td>
+      <td class="text-right">$1</td>
     </tr>
   </tbody>
 </table>
 ```
-
-## New HTML
-
-```html
-
-```
-
